@@ -13,4 +13,3 @@ pluginManagement {
 }
 
 rootProject.name = "TicTacToe"
-

@@ -46,7 +46,7 @@ fun TicTacToeApp() {
                     modifier = Modifier
                         .width(80.dp)
                         .height(80.dp)
-                        .border(width = 1.dp, color = Color.LightGray, shape = RoundedCornerShape(20))
+                        .border(width = 1.dp, color = Color.LightGray)
                         .onClick {
                             if (board[i] == ' ' && !isDone) {
                                 board[i] = currentPlayer
