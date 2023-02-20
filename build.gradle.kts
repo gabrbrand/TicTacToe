@@ -7,7 +7,7 @@ plugins {
 }
 
 group = "com.example"
-version = "1.0-SNAPSHOT"
+version = "2.0-SNAPSHOT"
 
 repositories {
     google()
@@ -36,7 +36,7 @@ compose.desktop {
         nativeDistributions {
             targetFormats(TargetFormat.Rpm, TargetFormat.Msi, TargetFormat.Deb)
             packageName = "TicTacToe"
-            packageVersion = "1.0.0"
+            packageVersion = "2.0.0"
         }
     }
 }
