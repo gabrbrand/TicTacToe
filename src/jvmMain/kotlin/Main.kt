@@ -152,7 +152,7 @@ fun TicTacToeApp() {
                         },
                     contentAlignment = Alignment.Center
                 ) {
-                    Text(text = "${board[i]}", fontSize = 25.sp, fontWeight = FontWeight.Black)
+                    Text(text = "${board[i]}", fontSize = 60.sp, fontWeight = FontWeight.Bold)
                 }
             }
         }
