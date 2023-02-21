@@ -50,6 +50,7 @@ fun TicTacToeApp() {
     val board = remember { mutableStateListOf(' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ') }
 
     var currentPlayer by remember { mutableStateOf('X') }
+    var winner by remember { mutableStateOf(' ') }
 
     var gameOver by remember { mutableStateOf(false) }
 
@@ -134,7 +135,7 @@ fun TicTacToeApp() {
                             if (board[i] == ' ' && !gameOver) {
                                 board[i] = currentPlayer
 
-                                val winner = getWinner(board)
+                                winner = getWinner(board)
                                 if (winner != ' ') {
                                     when (winner) {
                                         'X' -> pointsX++
@@ -168,6 +169,7 @@ fun TicTacToeApp() {
             ) {
                 Text(
                     text = "Player 1 (X)",
+                    color = if (winner == 'X' && gameOver) Color(0, 150, 50) else Color.Black,
                     fontWeight = if (currentPlayer == 'X' && !gameOver) FontWeight.ExtraBold else FontWeight.Normal
                 )
                 Spacer(modifier = Modifier.height(6.dp))
@@ -189,7 +191,10 @@ fun TicTacToeApp() {
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center
             ) {
-                Text(text = "Draw")
+                Text(
+                    text = "Draw",
+                    color = if (winner == ' ' && gameOver) Color.Red else Color.Black
+                )
                 Spacer(modifier = Modifier.height(6.dp))
                 Text(text = "$draw")
             }
@@ -208,6 +213,7 @@ fun TicTacToeApp() {
             ) {
                 Text(
                     text = "Player 2 (O)",
+                    color = if (winner == 'O' && gameOver) Color(0, 150, 50) else Color.Black,
                     fontWeight = if (currentPlayer == 'O' && !gameOver) FontWeight.ExtraBold else FontWeight.Normal
                 )
                 Spacer(modifier = Modifier.height(6.dp))
