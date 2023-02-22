@@ -35,7 +35,7 @@ compose.desktop {
         mainClass = "MainKt"
         nativeDistributions {
             targetFormats(TargetFormat.Rpm, TargetFormat.Msi, TargetFormat.Deb)
-            packageName = "Tic-Tac-Toe"
+            packageName = "TicTacToe"
             packageVersion = "2.1.0"
         }
     }

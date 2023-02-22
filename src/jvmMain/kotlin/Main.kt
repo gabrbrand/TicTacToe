@@ -11,7 +11,6 @@ import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Refresh
 import androidx.compose.runtime.*
-import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
@@ -47,16 +46,23 @@ fun main() = application {
 @Composable
 @Preview
 fun TicTacToeApp() {
-    val board = remember { mutableStateListOf(' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ') }
+    val board = remember { Array(9) { ' ' } }
 
     var currentPlayer by remember { mutableStateOf('X') }
-    var winner by remember { mutableStateOf(' ') }
 
-    var gameOver by remember { mutableStateOf(false) }
+    var winner by remember { mutableStateOf(' ') }
 
     var pointsX by remember { mutableStateOf(0) }
     var pointsO by remember { mutableStateOf(0) }
-    var draw by remember { mutableStateOf(0) }
+    var draws by remember { mutableStateOf(0) }
+
+    var gameIsOver by remember { mutableStateOf(false) }
+
+    val reset = {
+        for (i in board.indices) board[i] = ' '
+        currentPlayer = 'X'
+        gameIsOver = false
+    }
 
     Column {
         // Main toolbar
@@ -83,9 +89,7 @@ fun TicTacToeApp() {
             ) {
                 IconButton(
                     onClick = {
-                        for (i in board.indices) board[i] = ' '
-                        currentPlayer = 'X'
-                        gameOver = false
+                        reset()
                     }
                 ) {
                     Icon(
@@ -126,13 +130,13 @@ fun TicTacToeApp() {
 
         // Game Board
         LazyVerticalGrid(columns = GridCells.Fixed(3)) {
-            items(9) { i ->
+            items(count = 9) { i ->
                 Box(
                     modifier = Modifier
                         .size(100.dp)
                         .border(width = 1.dp, color = Color(0xFF27282E))
                         .clickable {
-                            if (board[i] == ' ' && !gameOver) {
+                            if (board[i] == ' ' && !gameIsOver) {
                                 board[i] = currentPlayer
 
                                 winner = getWinner(board)
@@ -141,18 +145,20 @@ fun TicTacToeApp() {
                                         'X' -> pointsX++
                                         'O' -> pointsO++
                                     }
-                                    gameOver = true
+                                    gameIsOver = true
                                 } else if (board.all { cell -> cell != ' ' }) {
-                                    draw++
-                                    gameOver = true
+                                    draws++
+                                    gameIsOver = true
                                 }
 
                                 currentPlayer = if (currentPlayer == 'X') 'O' else 'X'
+                            } else if (gameIsOver) {
+                                reset()
                             }
                         },
                     contentAlignment = Alignment.Center
                 ) {
-                    Text(text = "${board[i]}", fontSize = 60.sp, fontWeight = FontWeight.Bold)
+                    Text(text = board[i].toString(), fontSize = 60.sp, fontWeight = FontWeight.Bold)
                 }
             }
         }
@@ -169,8 +175,8 @@ fun TicTacToeApp() {
             ) {
                 Text(
                     text = "Player 1 (X)",
-                    color = if (winner == 'X' && gameOver) Color(0, 150, 50) else Color.Black,
-                    fontWeight = if (currentPlayer == 'X' && !gameOver) FontWeight.ExtraBold else FontWeight.Normal
+                    color = if (winner == 'X' && gameIsOver) Color(0, 150, 50) else Color.Black,
+                    fontWeight = if (currentPlayer == 'X' && !gameIsOver) FontWeight.ExtraBold else FontWeight.Normal
                 )
                 Spacer(modifier = Modifier.height(6.dp))
                 Text(
@@ -193,10 +199,10 @@ fun TicTacToeApp() {
             ) {
                 Text(
                     text = "Draw",
-                    color = if (winner == ' ' && gameOver) Color.Red else Color.Black
+                    color = if (winner == ' ' && gameIsOver) Color.Red else Color.Black
                 )
                 Spacer(modifier = Modifier.height(6.dp))
-                Text(text = "$draw")
+                Text(text = "$draws")
             }
 
             Spacer(
@@ -213,8 +219,8 @@ fun TicTacToeApp() {
             ) {
                 Text(
                     text = "Player 2 (O)",
-                    color = if (winner == 'O' && gameOver) Color(0, 150, 50) else Color.Black,
-                    fontWeight = if (currentPlayer == 'O' && !gameOver) FontWeight.ExtraBold else FontWeight.Normal
+                    color = if (winner == 'O' && gameIsOver) Color(0, 150, 50) else Color.Black,
+                    fontWeight = if (currentPlayer == 'O' && !gameIsOver) FontWeight.ExtraBold else FontWeight.Normal
                 )
                 Spacer(modifier = Modifier.height(6.dp))
                 Text(
@@ -226,7 +232,7 @@ fun TicTacToeApp() {
     }
 }
 
-fun getWinner(board: SnapshotStateList<Char>): Char {
+fun getWinner(board: Array<Char>): Char {
     for (i in 0..8 step 3) {
         // Check rows
         if (board[i] == board[i + 1] && board[i + 1] == board[i + 2]) {
