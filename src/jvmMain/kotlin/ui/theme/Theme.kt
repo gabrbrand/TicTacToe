@@ -6,16 +6,43 @@ import androidx.compose.material.darkColors
 import androidx.compose.material.lightColors
 import androidx.compose.runtime.Composable
 
-private val darkColors = darkColors(
-    primary = Purple200,
-    primaryVariant = Purple700,
-    secondary = Teal200
-)
+//private val darkColors = darkColors(
+//    primary = Purple200,
+//    primaryVariant = Purple700,
+//    secondary = Teal200
+//)
+//
+//private val lightColors = lightColors(
+//    primary = Purple500,
+//    primaryVariant = Purple700,
+//    secondary = Teal200
+//)
 
 private val lightColors = lightColors(
-    primary = Purple500,
-    primaryVariant = Purple700,
-    secondary = Teal200
+    primary = light_primary,
+    onPrimary = light_onPrimary,
+    secondary = light_secondary,
+    onSecondary = light_onSecondary,
+    error = light_error,
+    onError = light_onError,
+    background = light_background,
+    onBackground = light_onBackground,
+    surface = light_surface,
+    onSurface = light_onSurface,
+)
+
+
+private val darkColors = darkColors(
+    primary = dark_primary,
+    onPrimary = dark_onPrimary,
+    secondary = dark_secondary,
+    onSecondary = dark_onSecondary,
+    error = dark_error,
+    onError = dark_onError,
+    background = dark_background,
+    onBackground = dark_onBackground,
+    surface = dark_surface,
+    onSurface = dark_onSurface,
 )
 
 @Composable
