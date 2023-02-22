@@ -76,7 +76,7 @@ fun TicTacToeApp() {
             // Main toolbar
             Row(
                 modifier = Modifier
-                    .background(color = MaterialTheme.colors.primary) // Color(0xFF27282E)
+                    .background(color = MaterialTheme.colors.primary)
                     .height(40.dp)
                     .fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
@@ -170,7 +170,7 @@ fun TicTacToeApp() {
                     Box(
                         modifier = Modifier
                             .size(100.dp)
-                            .border(width = 1.dp, color = MaterialTheme.colors.primary) //Color(0xFF27282E)
+                            .border(width = 1.dp, color = MaterialTheme.colors.primary)
                             .clickable {
                                 if (board[i] == ' ' && !gameIsOver) {
                                     board[i] = currentPlayer
