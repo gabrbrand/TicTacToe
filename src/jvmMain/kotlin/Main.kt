@@ -4,10 +4,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Refresh
 import androidx.compose.runtime.*
@@ -25,6 +22,7 @@ import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.WindowPosition
 import androidx.compose.ui.window.application
 import androidx.compose.ui.window.rememberWindowState
+import ui.theme.AppTheme
 import java.awt.Desktop
 import java.net.URI
 
@@ -46,6 +44,8 @@ fun main() = application {
 @Composable
 @Preview
 fun TicTacToeApp() {
+    var isDark by remember { mutableStateOf(false) }
+
     val board = remember { Array(9) { ' ' } }
 
     var currentPlayer by remember { mutableStateOf('X') }
@@ -64,169 +64,205 @@ fun TicTacToeApp() {
         gameIsOver = false
     }
 
-    Column {
-        // Main toolbar
-        Row(
+    AppTheme(
+        darkTheme = isDark
+    ) {
+        Column(
             modifier = Modifier
-                .background(color = Color(0xFF27282E))
-                .height(40.dp)
-                .fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
+                .fillMaxSize()
+                .background(color = MaterialTheme.colors.background)
         ) {
-            TooltipArea(
-                tooltip = {
-                    Surface(
-                        modifier = Modifier.shadow(4.dp),
-                        shape = RoundedCornerShape(4.dp)
+            // Main toolbar
+            Row(
+                modifier = Modifier
+                    .background(color = Color(0xFF27282E))
+                    .height(40.dp)
+                    .fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                TooltipArea(
+                    tooltip = {
+                        Surface(
+                            modifier = Modifier.shadow(4.dp),
+                            shape = RoundedCornerShape(4.dp)
+                        ) {
+                            Text(
+                                text = "New game",
+                                modifier = Modifier.padding(10.dp)
+                            )
+                        }
+                    }
+                ) {
+                    IconButton(
+                        onClick = {
+                            reset()
+                        }
                     ) {
-                        Text(
-                            text = "New game",
-                            modifier = Modifier.padding(10.dp)
+                        Icon(
+                            imageVector = Icons.Rounded.Refresh,
+                            contentDescription = "New game",
+                            tint = Color.White
                         )
                     }
                 }
-            ) {
-                IconButton(
-                    onClick = {
-                        reset()
-                    }
-                ) {
-                    Icon(
-                        imageVector = Icons.Rounded.Refresh,
-                        contentDescription = "New game",
-                        tint = Color.White
-                    )
-                }
-            }
 
-            TooltipArea(
-                tooltip = {
-                    Surface(
-                        modifier = Modifier.shadow(4.dp),
-                        shape = RoundedCornerShape(4.dp)
-                    ) {
-                        Text(
-                            text = "Open GitHub link in browser",
-                            modifier = Modifier.padding(10.dp)
-                        )
-                    }
-                }
-            ) {
-                IconButton(
-                    onClick = {
-                        Desktop.getDesktop().browse(URI.create("https://github.com/gabrbrand/TicTacToe"))
-                    }
-                ) {
-                    Icon(
-                        painter = painterResource("icons/github.svg"),
-                        contentDescription = "Open GitHub link in browser",
-                        tint = Color.White
-                    )
-                }
-            }
-        }
-
-
-        // Game Board
-        LazyVerticalGrid(columns = GridCells.Fixed(3)) {
-            items(count = 9) { i ->
-                Box(
-                    modifier = Modifier
-                        .size(100.dp)
-                        .border(width = 1.dp, color = Color(0xFF27282E))
-                        .clickable {
-                            if (board[i] == ' ' && !gameIsOver) {
-                                board[i] = currentPlayer
-
-                                winner = getWinner(board)
-                                if (winner != ' ') {
-                                    when (winner) {
-                                        'X' -> pointsX++
-                                        'O' -> pointsO++
-                                    }
-                                    gameIsOver = true
-                                } else if (board.all { cell -> cell != ' ' }) {
-                                    draws++
-                                    gameIsOver = true
-                                }
-
-                                currentPlayer = if (currentPlayer == 'X') 'O' else 'X'
-                            } else if (gameIsOver) {
-                                reset()
+                Row {
+                    TooltipArea(
+                        tooltip = {
+                            Surface(
+                                modifier = Modifier.shadow(4.dp),
+                                shape = RoundedCornerShape(4.dp)
+                            ) {
+                                Text(
+                                    text = "Open GitHub link in browser",
+                                    modifier = Modifier.padding(10.dp)
+                                )
                             }
-                        },
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text(text = board[i].toString(), fontSize = 60.sp, fontWeight = FontWeight.Bold)
+                        }
+                    ) {
+                        IconButton(
+                            onClick = {
+                                Desktop.getDesktop().browse(URI.create("https://github.com/gabrbrand/TicTacToe"))
+                            }
+                        ) {
+                            Icon(
+                                painter = painterResource("icons/github.svg"),
+                                contentDescription = "Open GitHub link in browser",
+                                tint = Color.White
+                            )
+                        }
+                    }
+
+                    TooltipArea(
+                        tooltip = {
+                            Surface(
+                                modifier = Modifier.shadow(4.dp),
+                                shape = RoundedCornerShape(4.dp)
+                            ) {
+                                Text(
+                                    text = "Switch to ${if (isDark) "light" else "dark"} mode",
+                                    modifier = Modifier.padding(10.dp)
+                                )
+                            }
+                        }
+                    ) {
+                        IconButton(
+                            onClick = {
+                                isDark = !isDark
+                            }
+                        ) {
+                            Icon(
+                                painter = painterResource(resourcePath = if (isDark) "icons/lightTheme.svg" else "icons/darkTheme.svg"),
+                                contentDescription = "Switch to ${if (isDark) "light" else "dark"} mode",
+                                tint = Color.White
+                            )
+                        }
+                    }
                 }
             }
-        }
 
-        //Bottom bar
-        Row(
-            horizontalArrangement = Arrangement.Center,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Column(
-                modifier = Modifier.size(100.dp),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center
-            ) {
-                Text(
-                    text = "Player 1 (X)",
-                    color = if (winner == 'X' && gameIsOver) Color(0, 150, 50) else Color.Black,
-                    fontWeight = if (currentPlayer == 'X' && !gameIsOver) FontWeight.ExtraBold else FontWeight.Normal
-                )
-                Spacer(modifier = Modifier.height(6.dp))
-                Text(
-                    text = "$pointsX",
-                    textDecoration = if (pointsX > pointsO) TextDecoration.Underline else TextDecoration.None
-                )
+
+            // Game Board
+            LazyVerticalGrid(columns = GridCells.Fixed(3)) {
+                items(count = 9) { i ->
+                    Box(
+                        modifier = Modifier
+                            .size(100.dp)
+                            .border(width = 1.dp, color = Color(0xFF27282E))
+                            .clickable {
+                                if (board[i] == ' ' && !gameIsOver) {
+                                    board[i] = currentPlayer
+
+                                    winner = getWinner(board)
+                                    if (winner != ' ') {
+                                        when (winner) {
+                                            'X' -> pointsX++
+                                            'O' -> pointsO++
+                                        }
+                                        gameIsOver = true
+                                    } else if (board.all { cell -> cell != ' ' }) {
+                                        draws++
+                                        gameIsOver = true
+                                    }
+
+                                    currentPlayer = if (currentPlayer == 'X') 'O' else 'X'
+                                } else if (gameIsOver) {
+                                    reset()
+                                }
+                            },
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text(text = board[i].toString(), fontSize = 60.sp, fontWeight = FontWeight.Bold)
+                    }
+                }
             }
 
-            Spacer(
-                modifier = Modifier
-                    .fillMaxHeight(0.5f)
-                    .background(color = Color.LightGray)
-                    .width(2.dp)
-            )
-
-            Column(
-                modifier = Modifier.size(100.dp),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center
+            //Bottom bar
+            Row(
+                horizontalArrangement = Arrangement.Center,
+                verticalAlignment = Alignment.CenterVertically
             ) {
-                Text(
-                    text = "Draw",
-                    color = if (winner == ' ' && gameIsOver) Color.Red else Color.Black
-                )
-                Spacer(modifier = Modifier.height(6.dp))
-                Text(text = "$draws")
-            }
+                Column(
+                    modifier = Modifier.size(100.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center
+                ) {
+                    Text(
+                        text = "Player 1 (X)",
+                        color = if (winner == 'X' && gameIsOver) Color(0, 150, 50) else Color.Black,
+                        fontWeight = if (currentPlayer == 'X' && !gameIsOver) FontWeight.ExtraBold else FontWeight.Normal
+                    )
+                    Spacer(modifier = Modifier.height(6.dp))
+                    Text(
+                        text = "$pointsX",
+                        textDecoration = if (pointsX > pointsO) TextDecoration.Underline else TextDecoration.None
+                    )
+                }
 
-            Spacer(
-                modifier = Modifier
-                    .fillMaxHeight(0.5f)
-                    .background(color = Color.LightGray)
-                    .width(2.dp)
-            )
+                Spacer(
+                    modifier = Modifier
+                        .fillMaxHeight(0.5f)
+                        .background(color = Color.LightGray)
+                        .width(2.dp)
+                )
 
-            Column(
-                modifier = Modifier.size(100.dp),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center
-            ) {
-                Text(
-                    text = "Player 2 (O)",
-                    color = if (winner == 'O' && gameIsOver) Color(0, 150, 50) else Color.Black,
-                    fontWeight = if (currentPlayer == 'O' && !gameIsOver) FontWeight.ExtraBold else FontWeight.Normal
+                Column(
+                    modifier = Modifier.size(100.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center
+                ) {
+                    Text(
+                        text = "Draw",
+                        color = if (winner == ' ' && gameIsOver) Color.Red else Color.Black
+                    )
+                    Spacer(modifier = Modifier.height(6.dp))
+                    Text(text = "$draws")
+                }
+
+                Spacer(
+                    modifier = Modifier
+                        .fillMaxHeight(0.5f)
+                        .background(color = Color.LightGray)
+                        .width(2.dp)
                 )
-                Spacer(modifier = Modifier.height(6.dp))
-                Text(
-                    text = "$pointsO",
-                    textDecoration = if (pointsO > pointsX) TextDecoration.Underline else TextDecoration.None
-                )
+
+                Column(
+                    modifier = Modifier.size(100.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center
+                ) {
+                    Text(
+                        text = "Player 2 (O)",
+                        color = if (winner == 'O' && gameIsOver) Color(0, 150, 50) else Color.Black,
+                        fontWeight = if (currentPlayer == 'O' && !gameIsOver) FontWeight.ExtraBold else FontWeight.Normal
+                    )
+                    Spacer(modifier = Modifier.height(6.dp))
+                    Text(
+                        text = "$pointsO",
+                        textDecoration = if (pointsO > pointsX) TextDecoration.Underline else TextDecoration.None
+                    )
+                }
             }
         }
     }
