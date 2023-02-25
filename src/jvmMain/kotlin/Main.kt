@@ -30,7 +30,7 @@ fun main() = application {
         onCloseRequest = ::exitApplication,
         state = rememberWindowState(
             position = WindowPosition(Alignment.Center),
-            size = DpSize(width = 300.dp, height = 450.dp)
+            size = DpSize(width = 330.dp, height = 460.dp)
         ),
         title = "Tic-Tac-Toe",
         resizable = false,
@@ -120,6 +120,7 @@ fun TicTacToeApp() {
 
             //Bottom bar
             Row(
+                modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.Center,
                 verticalAlignment = Alignment.CenterVertically
             ) {
