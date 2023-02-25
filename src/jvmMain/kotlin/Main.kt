@@ -5,8 +5,6 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.Refresh
 import androidx.compose.runtime.*
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
@@ -41,7 +39,6 @@ fun main() = application {
     }
 }
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 @Preview
 fun TicTacToeApp() {
@@ -74,96 +71,11 @@ fun TicTacToeApp() {
                 .fillMaxSize()
                 .background(color = MaterialTheme.colors.background)
         ) {
-            // Main toolbar
-            Row(
-                modifier = Modifier
-                    .background(color = MaterialTheme.colors.primary)
-                    .height(40.dp)
-                    .fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                TooltipArea(
-                    tooltip = {
-                        Surface(
-                            modifier = Modifier.shadow(4.dp),
-                            shape = RoundedCornerShape(4.dp)
-                        ) {
-                            Text(
-                                text = "New game",
-                                modifier = Modifier.padding(10.dp)
-                            )
-                        }
-                    }
-                ) {
-                    IconButton(
-                        onClick = {
-                            reset()
-                        }
-                    ) {
-                        Icon(
-                            imageVector = Icons.Rounded.Refresh,
-                            contentDescription = "New game",
-                            tint = MaterialTheme.colors.onPrimary
-                        )
-                    }
-                }
-
-                Row {
-                    TooltipArea(
-                        tooltip = {
-                            Surface(
-                                modifier = Modifier.shadow(4.dp),
-                                shape = RoundedCornerShape(4.dp)
-                            ) {
-                                Text(
-                                    text = "Open GitHub link in browser",
-                                    modifier = Modifier.padding(10.dp)
-                                )
-                            }
-                        }
-                    ) {
-                        IconButton(
-                            onClick = {
-                                Desktop.getDesktop().browse(URI.create("https://github.com/gabrbrand/TicTacToe"))
-                            }
-                        ) {
-                            Icon(
-                                painter = painterResource("icons/github.svg"),
-                                contentDescription = "Open GitHub link in browser",
-                                tint = MaterialTheme.colors.onPrimary
-                            )
-                        }
-                    }
-
-                    TooltipArea(
-                        tooltip = {
-                            Surface(
-                                modifier = Modifier.shadow(4.dp),
-                                shape = RoundedCornerShape(4.dp)
-                            ) {
-                                Text(
-                                    text = "Switch to ${if (isDark) "light" else "dark"} mode",
-                                    modifier = Modifier.padding(10.dp)
-                                )
-                            }
-                        }
-                    ) {
-                        IconButton(
-                            onClick = {
-                                isDark = !isDark
-                            }
-                        ) {
-                            Icon(
-                                painter = painterResource(resourcePath = if (isDark) "icons/lightTheme.svg" else "icons/darkTheme.svg"),
-                                contentDescription = "Switch to ${if (isDark) "light" else "dark"} mode",
-                                tint = MaterialTheme.colors.onPrimary
-                            )
-                        }
-                    }
-                }
-            }
-
+            MainToolBar(
+                onNewGameButtonClick = reset,
+                appThemeIsDark = isDark,
+                onThemeSwitcherClick = { isDark = !isDark }
+            )
 
             // Game Board
             LazyVerticalGrid(columns = GridCells.Fixed(3)) {
@@ -271,6 +183,99 @@ fun TicTacToeApp() {
                         text = pointsO.toString(),
                         color = MaterialTheme.colors.onBackground,
                         textDecoration = if (pointsO > pointsX) TextDecoration.Underline else TextDecoration.None
+                    )
+                }
+            }
+        }
+    }
+}
+
+@OptIn(ExperimentalFoundationApi::class)
+@Composable
+fun MainToolBar(
+    onNewGameButtonClick: () -> Unit,
+    appThemeIsDark: Boolean,
+    onThemeSwitcherClick: () -> Unit
+) {
+    Row(
+        modifier = Modifier
+            .background(color = MaterialTheme.colors.primary)
+            .height(40.dp)
+            .fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        TooltipArea(
+            tooltip = {
+                Surface(
+                    modifier = Modifier.shadow(4.dp),
+                    shape = RoundedCornerShape(4.dp)
+                ) {
+                    Text(
+                        text = "New game",
+                        modifier = Modifier.padding(10.dp)
+                    )
+                }
+            }
+        ) {
+            IconButton(
+                onClick = onNewGameButtonClick
+            ) {
+                Icon(
+                    painter = painterResource("icons/new_game.svg"),
+                    contentDescription = "New game",
+                    tint = MaterialTheme.colors.onPrimary
+                )
+            }
+        }
+
+        Row {
+            TooltipArea(
+                tooltip = {
+                    Surface(
+                        modifier = Modifier.shadow(4.dp),
+                        shape = RoundedCornerShape(4.dp)
+                    ) {
+                        Text(
+                            text = "Open GitHub link in browser",
+                            modifier = Modifier.padding(10.dp)
+                        )
+                    }
+                }
+            ) {
+                IconButton(
+                    onClick = {
+                        Desktop.getDesktop().browse(URI.create("https://github.com/gabrbrand/TicTacToe"))
+                    }
+                ) {
+                    Icon(
+                        painter = painterResource("icons/github.svg"),
+                        contentDescription = "Open GitHub link in browser",
+                        tint = MaterialTheme.colors.onPrimary
+                    )
+                }
+            }
+
+            TooltipArea(
+                tooltip = {
+                    Surface(
+                        modifier = Modifier.shadow(4.dp),
+                        shape = RoundedCornerShape(4.dp)
+                    ) {
+                        Text(
+                            text = "Switch to ${if (appThemeIsDark) "light" else "dark"} mode",
+                            modifier = Modifier.padding(10.dp)
+                        )
+                    }
+                }
+            ) {
+                IconButton(
+                    onClick = onThemeSwitcherClick
+                ) {
+                    Icon(
+                        painter = painterResource(resourcePath = if (appThemeIsDark) "icons/light_mode.svg" else "icons/dark_mode.svg"),
+                        contentDescription = "Switch to ${if (appThemeIsDark) "light" else "dark"} mode",
+                        tint = MaterialTheme.colors.onPrimary
                     )
                 }
             }
