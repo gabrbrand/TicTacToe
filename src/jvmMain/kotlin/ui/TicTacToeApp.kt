@@ -54,7 +54,7 @@ fun TicTacToeApp() {
                     if (board[i] == ' ' && !gameIsOver) {
                         board[i] = currentPlayer
 
-                        val winner = getWinnerCoordinates(board)
+                        val winner = getWinner(board)
                         winnerCoordinates = winner.coordinates
                         winnerCharacter = winner.character
                         if (winnerCharacter != ' ') {
@@ -94,7 +94,7 @@ data class Winner(
     val coordinates: List<Int> = emptyList()
 )
 
-fun getWinnerCoordinates(board: SnapshotStateList<Char>): Winner {
+fun getWinner(board: SnapshotStateList<Char>): Winner {
     for (i in 0..8 step 3) {
         // Check rows
         if (board[i] == board[i + 1] && board[i + 1] == board[i + 2]) {
