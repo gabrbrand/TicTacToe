@@ -2,6 +2,7 @@ package ui
 
 import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.foundation.background
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.MaterialTheme
@@ -13,7 +14,8 @@ import ui.theme.AppTheme
 @Composable
 @Preview
 fun TicTacToeApp() {
-    var isDark by remember { mutableStateOf(false) }
+    val isSystemInDarkTheme = isSystemInDarkTheme()
+    var isDark by remember { mutableStateOf(isSystemInDarkTheme) }
 
     val board = remember { mutableStateListOf(' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ') }
 
@@ -26,12 +28,12 @@ fun TicTacToeApp() {
     var pointsO by remember { mutableStateOf(0) }
     var draws by remember { mutableStateOf(0) }
 
-    var gameIsOver by remember { mutableStateOf(false) }
+    var isGameOver by remember { mutableStateOf(false) }
 
     val reset = {
         for (i in board.indices) board[i] = ' '
         currentPlayer = 'X'
-        gameIsOver = false
+        isGameOver = false
     }
 
     AppTheme(
@@ -44,14 +46,14 @@ fun TicTacToeApp() {
         ) {
             MainToolBar(
                 onNewGameButtonClick = reset,
-                appThemeIsDark = isDark,
+                isAppThemeDark = isDark,
                 onThemeSwitcherClick = { isDark = !isDark }
             )
 
             GameBoard(
                 board = board,
                 onCellClick = { i ->
-                    if (board[i] == ' ' && !gameIsOver) {
+                    if (board[i] == ' ' && !isGameOver) {
                         board[i] = currentPlayer
 
                         val winner = getWinner(board)
@@ -62,25 +64,25 @@ fun TicTacToeApp() {
                                 'X' -> pointsX++
                                 'O' -> pointsO++
                             }
-                            gameIsOver = true
+                            isGameOver = true
                         } else if (board.all { cell -> cell != ' ' }) {
                             draws++
-                            gameIsOver = true
+                            isGameOver = true
                         }
 
                         currentPlayer = if (currentPlayer == 'X') 'O' else 'X'
-                    } else if (gameIsOver) {
+                    } else if (isGameOver) {
                         reset()
                     }
                 },
                 winnerCoordinates = winnerCoordinates,
-                gameIsOver = gameIsOver
+                isGameOver = isGameOver
             )
 
             BottomBar(
                 currentPlayer = currentPlayer,
                 winnerCharacter = winnerCharacter,
-                gameIsOver = gameIsOver,
+                isGameOver = isGameOver,
                 pointsX = pointsX,
                 pointsO = pointsO,
                 draws = draws

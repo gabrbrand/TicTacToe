@@ -15,7 +15,7 @@ fun main() = application {
             size = DpSize(width = 330.dp, height = 470.dp)
         ),
         title = "Tic-Tac-Toe",
-        resizable = false,
+        resizable = false
     ) {
         TicTacToeApp()
     }

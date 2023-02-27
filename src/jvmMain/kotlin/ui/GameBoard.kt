@@ -21,7 +21,7 @@ fun GameBoard(
     board: SnapshotStateList<Char>,
     onCellClick: (Int) -> Unit,
     winnerCoordinates: List<Int>,
-    gameIsOver: Boolean
+    isGameOver: Boolean
 ) {
     LazyVerticalGrid(columns = GridCells.Fixed(3)) {
         items(count = 9) { i ->
@@ -34,7 +34,7 @@ fun GameBoard(
             ) {
                 Text(
                     text = board[i].toString(),
-                    color = if (i in winnerCoordinates && gameIsOver) MaterialTheme.colors.primary else MaterialTheme.colors.onBackground,
+                    color = if (i in winnerCoordinates && isGameOver) MaterialTheme.colors.primary else MaterialTheme.colors.onBackground,
                     fontSize = 60.sp,
                     fontWeight = FontWeight.Bold
                 )

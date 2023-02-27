@@ -19,7 +19,7 @@ import java.net.URI
 @Composable
 fun MainToolBar(
     onNewGameButtonClick: () -> Unit,
-    appThemeIsDark: Boolean,
+    isAppThemeDark: Boolean,
     onThemeSwitcherClick: () -> Unit
 ) {
     Row(
@@ -88,7 +88,7 @@ fun MainToolBar(
                         shape = RoundedCornerShape(4.dp)
                     ) {
                         Text(
-                            text = "Switch to ${if (appThemeIsDark) "light" else "dark"} mode",
+                            text = "Switch to ${if (isAppThemeDark) "light" else "dark"} mode",
                             modifier = Modifier.padding(10.dp)
                         )
                     }
@@ -98,8 +98,8 @@ fun MainToolBar(
                     onClick = onThemeSwitcherClick
                 ) {
                     Icon(
-                        painter = painterResource(resourcePath = if (appThemeIsDark) "icons/light_mode.svg" else "icons/dark_mode.svg"),
-                        contentDescription = "Switch to ${if (appThemeIsDark) "light" else "dark"} mode",
+                        painter = painterResource(resourcePath = if (isAppThemeDark) "icons/light_mode.svg" else "icons/dark_mode.svg"),
+                        contentDescription = "Switch to ${if (isAppThemeDark) "light" else "dark"} mode",
                         tint = MaterialTheme.colors.onPrimary
                     )
                 }

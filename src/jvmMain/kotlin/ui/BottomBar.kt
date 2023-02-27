@@ -16,7 +16,7 @@ import androidx.compose.ui.unit.dp
 fun BottomBar(
     currentPlayer: Char,
     winnerCharacter: Char,
-    gameIsOver: Boolean,
+    isGameOver: Boolean,
     pointsX: Int,
     pointsO: Int,
     draws: Int
@@ -35,8 +35,8 @@ fun BottomBar(
         ) {
             Text(
                 text = "Player 1 (X)",
-                color = if (winnerCharacter == 'X' && gameIsOver) MaterialTheme.colors.primary else MaterialTheme.colors.onBackground,
-                fontWeight = if (currentPlayer == 'X' && !gameIsOver || winnerCharacter == 'X' && gameIsOver) FontWeight.ExtraBold else FontWeight.Normal
+                color = if (winnerCharacter == 'X' && isGameOver) MaterialTheme.colors.primary else MaterialTheme.colors.onBackground,
+                fontWeight = if (currentPlayer == 'X' && !isGameOver || winnerCharacter == 'X' && isGameOver) FontWeight.ExtraBold else FontWeight.Normal
             )
             Spacer(modifier = Modifier.height(10.dp))
             Text(
@@ -60,8 +60,8 @@ fun BottomBar(
         ) {
             Text(
                 text = "Draw",
-                color = if (winnerCharacter == ' ' && gameIsOver) MaterialTheme.colors.error else MaterialTheme.colors.onBackground,
-                fontWeight = if (winnerCharacter == ' ' && gameIsOver) FontWeight.ExtraBold else FontWeight.Normal
+                color = if (winnerCharacter == ' ' && isGameOver) MaterialTheme.colors.error else MaterialTheme.colors.onBackground,
+                fontWeight = if (winnerCharacter == ' ' && isGameOver) FontWeight.ExtraBold else FontWeight.Normal
             )
             Spacer(modifier = Modifier.height(10.dp))
             Text(
@@ -84,8 +84,8 @@ fun BottomBar(
         ) {
             Text(
                 text = "Player 2 (O)",
-                color = if (winnerCharacter == 'O' && gameIsOver) MaterialTheme.colors.primary else MaterialTheme.colors.onBackground,
-                fontWeight = if (currentPlayer == 'O' && !gameIsOver || winnerCharacter == 'O' && gameIsOver) FontWeight.ExtraBold else FontWeight.Normal
+                color = if (winnerCharacter == 'O' && isGameOver) MaterialTheme.colors.primary else MaterialTheme.colors.onBackground,
+                fontWeight = if (currentPlayer == 'O' && !isGameOver || winnerCharacter == 'O' && isGameOver) FontWeight.ExtraBold else FontWeight.Normal
             )
             Spacer(modifier = Modifier.height(10.dp))
             Text(
