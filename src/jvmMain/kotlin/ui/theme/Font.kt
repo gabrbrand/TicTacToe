@@ -42,3 +42,10 @@ val Inter = FontFamily(
         weight = FontWeight.Thin
     )
 )
+
+val Handlee = FontFamily(
+    Font(
+        resource = "fonts/Handlee-Regular.ttf",
+        weight = FontWeight.Normal
+    )
+)

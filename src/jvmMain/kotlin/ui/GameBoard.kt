@@ -12,9 +12,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import ui.theme.Handlee
 
 @Composable
 fun GameBoard(
@@ -35,8 +35,8 @@ fun GameBoard(
                 Text(
                     text = board[i].toString(),
                     color = if (i in winnerCoordinates && isGameOver) MaterialTheme.colors.primary else MaterialTheme.colors.onBackground,
-                    fontSize = 60.sp,
-                    fontWeight = FontWeight.Bold
+                    fontSize = 50.sp,
+                    fontFamily = Handlee
                 )
             }
         }
