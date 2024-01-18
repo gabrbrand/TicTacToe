@@ -1,6 +1,6 @@
 # Tic-Tac-Toe
 
-A simple Tic-Tac-Toe game written in [Kotlin](https://kotlinlang.org/lp/multiplatform/) & [Compose
+A simple Tic-Tac-Toe game written in [Kotlin](https://www.jetbrains.com/kotlin-multiplatform/) & [Compose
 Multiplatform](https://www.jetbrains.com/lp/compose-multiplatform/)
 
 ![Screenshot in light mode](screenshots/light.png#gh-light-mode-only)
