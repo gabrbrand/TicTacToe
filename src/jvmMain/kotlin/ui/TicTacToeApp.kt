@@ -99,44 +99,36 @@ data class Winner(
 fun getWinner(board: SnapshotStateList<Char>): Winner {
     for (i in 0..8 step 3) {
         // Check rows
-        if (board[i] == board[i + 1] && board[i + 1] == board[i + 2]) {
-            if (board[i] != ' ') {
-                return Winner(
-                    character = board[i],
-                    coordinates = listOf(i, i + 1, i + 2)
-                )
-            }
+        if (board[i] == board[i + 1] && board[i + 1] == board[i + 2] && board[i] != ' ') {
+            return Winner(
+                character = board[i],
+                coordinates = listOf(i, i + 1, i + 2)
+            )
         }
     }
 
     for (i in 0..2) {
         // Check columns
-        if (board[i] == board[i + 3] && board[i + 3] == board[i + 6]) {
-            if (board[i] != ' ') {
-                return Winner(
-                    character = board[i],
-                    coordinates = listOf(i, i + 3, i + 6)
-                )
-            }
+        if (board[i] == board[i + 3] && board[i + 3] == board[i + 6] && board[i] != ' ') {
+            return Winner(
+                character = board[i],
+                coordinates = listOf(i, i + 3, i + 6)
+            )
         }
     }
 
     // Check diagonals
-    if (board[0] == board[4] && board[4] == board[8]) {
-        if (board[0] != ' ') {
-            return Winner(
-                character = board[0],
-                coordinates = listOf(0, 4, 8)
-            )
-        }
+    if (board[0] == board[4] && board[4] == board[8] && board[0] != ' ') {
+        return Winner(
+            character = board[0],
+            coordinates = listOf(0, 4, 8)
+        )
     }
-    if (board[2] == board[4] && board[4] == board[6]) {
-        if (board[2] != ' ') {
-            return Winner(
-                character = board[2],
-                coordinates = listOf(2, 4, 6)
-            )
-        }
+    if (board[2] == board[4] && board[4] == board[6] && board[2] != ' ') {
+        return Winner(
+            character = board[2],
+            coordinates = listOf(2, 4, 6)
+        )
     }
 
     return Winner()
